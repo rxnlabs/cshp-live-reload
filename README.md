@@ -13,6 +13,11 @@
 
 Please note that this plugin only helps during **development** and is not intended for use on a live production site.
 
+* __Uses Server-Sent Events (SSEs):__  Instead of using AJAX-Polling that constantly makes an AJAX request to the server using a combination of `setInterval` and `setTimeout`, Server-Sent Events keep a persistent connection with the server. This has the advantage of not making multiple AJAX requests to the server and flooding the Network requests Developer Tools in your browser. Only one persistent connection will display. Read more about the technical differences in these links:
+	* [https://medium.com/geekculture/ajax-polling-vs-long-polling-vs-websockets-vs-server-sent-events-e0d65033c9ba](https://medium.com/geekculture/ajax-polling-vs-long-polling-vs-websockets-vs-server-sent-events-e0d65033c9ba)
+	* [https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events)
+	* [https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events)
+
 ## Getting Started
 * After installing the plugin, it starts working immediately. There's no need for further configurations as the plugin automatically detects and monitors changes in the relevant (PHP, JS, CSS) files for the built-in supported themes (currently: crate and blocksy-child). 
 * You must be logged-in as a WordPress Cornershop user on the website (i.e. an email address that ends in @cornershopcreative.com). If you are not logged into the website, the page will notb reload when the assets are built.
