@@ -67,3 +67,11 @@ add_filter( 'cshp_lr_plugin_paths', 'cshp_live_reload_plugin_support' );
 * This will only reload CSS and JS on the frontend of the website. It will not reload those files in the admin.
 * This plugin will only reload the JS files that are loaded on the current page. If you are using some third-party plugin that combines/concatenates all JS files into a single JS file (e.g. WP Rocket or Autoptimizer), the JS file will not reload. You need to disable that plugin for this to work.
 * This plugin will only reload CSS and JS files from plugins that are currently active on the website.
+
+## FAQs
+* How is this different from the [Live Auto Refresh plugin](https://wordpress.org/plugins/live-auto-refresh/)?
+	* That plugin has a few issues:
+		* It uses AJAX polling to make requests every few seconds instead of SSE, which floods the browser tools Network log with requests.
+		* It stores the md5_hash of the theme file in the database and changes the hash in the database when a file is updated. This plugin does not store the changed files in the database and does not make any database calls (yet - this could change if we introduce some settings in the admin).
+		* It only works with the current theme files and does not work with plugins as well.
+		* It only works with changed PHP files and does not reload when JS and CSS files are changed.
