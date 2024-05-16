@@ -1,0 +1,2 @@
+zip-plugin:
+    rm -Rf cshp-live-reload cshp-live-reload.zip; mkdir cshp-live-reload && rsync -av --progress * cshp-live-reload --exclude cshp-live-reload --exclude .git --exclude .gitattributes --exclude .gitignore --exclude justfile --exclude bitbucket-pipelines.yml --exclude .idea --exclude bitbucket-pipelines.yml --exclude composer.json --exclude composer.lock --exclude inc/beta.php --exclude inc/beta-wpcli.php && zip -rv cshp-live-reload.zip cshp-live-reload && rm -Rf cshp-live-reload
