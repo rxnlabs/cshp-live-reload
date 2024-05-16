@@ -4,7 +4,7 @@ Plugin Name: Cornershop Live Reload
 Plugin URI: https://cornershopcreative.com/
 Description: Reload the website when a CSS, JS, or PHP file is updated. Helpful during theme development. Works with crate and blocksy-child. Replaces Gulp's Browsersync live reload feature for development.
 Version: 0.1.0
-Text Domain: cshp-pt
+Text Domain: cshp-lr
 Author: Cornershop Creative
 Author URI: https://cornershopcreative.com/
 License: GPLv2 or later
