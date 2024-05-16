@@ -64,7 +64,7 @@ function is_cornershop_user() {
 }
 
 function enqueue() {
-	if ( ! is_cornershop_server() ) {
+	if ( ! is_cornershop_user() ) {
 		return;
 	}
 
