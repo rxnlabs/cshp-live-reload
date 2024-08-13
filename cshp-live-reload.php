@@ -36,7 +36,7 @@ function is_cornershop_server() {
 	$_SERVER['HTTP_HOST'] = gethostname();
 	$cshp_co_expected_hostname = 'cshp.co';
 	$cshp_dev_expected_hostname = 'cshp.dev';
-    $reload = false;
+	$reload = false;
 	if ( false !== stripos( $_SERVER['HTTP_HOST'], $cshp_co_expected_hostname ) ) {
 		$reload = true;
 	} elseif ( false !== stripos( $_SERVER['HTTP_HOST'], $cshp_dev_expected_hostname ) ) {
@@ -527,7 +527,7 @@ function get_js_file_uri_hash_array() {
  */
 function get_reload_file_hash() {
 	$reload_hash = '';
-    $main_iterator = new \AppendIterator();
+	$main_iterator = new \AppendIterator();
 	$main_iterator->append( get_recursive_php_watch_paths() );
 	foreach ( $main_iterator as $file ) {
 		if ( ! is_readable( $file->getRealPath() ) || ! $file->isFile() ) {
