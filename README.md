@@ -3,11 +3,11 @@
 "Cornershop Live Reload" is a WordPress plugin developed to assist in theme development. It monitors changes in your CSS, JavaScript, and PHP files, and reloads the website whenever any of these files are updated.
 
 ## Key Features
-* __Live Reload:__ The plugin makes developing and testing your theme easier by automatically refreshing your website whenever you save changes to your CSS, JS or PHP files. This automatic reload helps developers instantly see the impact of their changes without needing to manually refresh the browser.
+* __Live Reload:__ The plugin makes developing and testing your theme easier by automatically refreshing your website whenever you save changes to your CSS, JS or PHP files. This automatic reload helps developers instantly see the impact of their changes without needing to manually refresh the browser. When a CSS file is updated, the new CSS file is applied without reloading the browser. When a JavaScript or PHP file is changed, the browser is reloaded.
 
 * __Compatibility:__ This plugin is tested and confirmed to work well on a Cornershop D24 server and Kinsta.
 
-* __Targeted Monitoring:__ This plugin is also written to work specifically with `crate` and `blocksy-child` themes. It also works with known Cornershop created plugins `cshp-accordion` and `cshp-people`.
+* __Targeted Monitoring:__ This plugin is also written to work specifically with `crate` and `blocksy-child` themes. It also works with known Cornershop created plugins `cshp-accordion` and `cshp-people`. Add compatibility for other plugins and themes by using the filters `cshp_lr_theme_paths` and `cshp_lr_plugin_paths`.
 
 * __Efficient Replacement for Browsersync:__ It serves as an efficient replacement for Gulp's Browsersync live reload feature for frontend developments.
 
@@ -18,8 +18,24 @@ Please note that this plugin only helps during **development** and is not intend
 	* [https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events)
 	* [https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events)
 
+* __Does live rely on a build tool such as Webpack, Vite, Rollup, etc...:__ This plugin is build tool agnostic and does not require you to use any build tools at all. Just simply change a file in the CSS or JS watch path or change a PHP file in a supported theme or plugin. It just works.
+
+__NOTE__: This plugin requires the webserver to support TCP HTTTP/1.1 for long running server events. This has plugin has only been tested on NGINX servers.
+
+```bash
+# add this to the active nginx.conf file
+
+# NOTE: This is automatically loading in the http context of the Nginx conf file since that's how the nginx.conf works. See the file /etc/nginx/nginx.conf.
+# setup a TCP HTTP/1.1 connections that are persisent by default
+# Do this create a Long running server sent Events for polling/long polling
+# see https://serverfault.com/a/801629
+proxy_http_version 1.1;
+proxy_set_header Connection "";
+proxy_buffering off;
+```
+
 ## Getting Started
-* After installing the plugin, it starts working immediately. There's no need for further configurations as the plugin automatically detects and monitors changes in the relevant (PHP, JS, CSS) files for the built-in supported themes (currently: crate and blocksy-child). 
+* After installing the plugin, it starts working immediately. There's no need for further configurations as the plugin automatically detects and monitors changes in the relevant (PHP, JS, CSS) files for the built-in supported themes (currently: crate and blocksy-child).
 * You must be logged-in as a WordPress Cornershop user on the website (i.e. an email address that ends in @cornershopcreative.com). If you are not logged into the website, the page will notb reload when the assets are built.
 
 ## Adding support for other themes or plugins.

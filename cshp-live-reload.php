@@ -133,7 +133,8 @@ function theme_paths() {
 		],
 	];
 
-	return apply_filters( 'cshp_lr_theme_paths', $theme_paths );
+	$theme_paths = apply_filters( 'cshp_lr_theme_paths', $theme_paths );
+	return is_array( $theme_paths ) ? $theme_paths : [];
 }
 
 function plugin_paths() {
@@ -148,7 +149,8 @@ function plugin_paths() {
 		],
 	];
 
-	return apply_filters( 'cshp_lr_plugin_paths', $plugin_paths );
+	$plugin_paths = apply_filters( 'cshp_lr_plugin_paths', $plugin_paths );
+	return is_array( $plugin_paths ) ? $plugin_paths : [];
 }
 
 /**
@@ -172,6 +174,14 @@ function watch_paths() {
 	return $paths;
 }
 
+/**
+ * Create a PHP directory iterator that filters files based on a regular expression pattern, excluding node_modules.
+ *
+ * @param string $path The path to the directory.
+ * @param string $file_type_pattern_regex (optional) Regular expression pattern to filter file types. Default is empty string.
+ *
+ * @return \RegexIterator The created directory iterator.
+ */
 function create_directory_regex_iterator( $path, $file_type_pattern_regex = '' ) {
 	$directory_iterator = new \RecursiveDirectoryIterator( $path, \RecursiveDirectoryIterator::SKIP_DOTS );
 	$iterator = new \RecursiveIteratorIterator( $directory_iterator, \RecursiveIteratorIterator::SELF_FIRST );
@@ -186,6 +196,11 @@ function create_directory_regex_iterator( $path, $file_type_pattern_regex = '' )
 	return $regex_iterator;
 }
 
+/**
+ * Get the list of CSS paths to watch for changes.
+ *
+ * @return \AppendIterator Combined iterator of all CSS watch paths.
+ */
 function get_recursive_css_watch_paths() {
 	$watch_paths = watch_paths();
 	$paths = [];
@@ -245,6 +260,14 @@ function get_recursive_css_watch_paths() {
 	return $main_iterator;
 }
 
+/**
+ * Get a recursive iterator that iterates over the JavaScript watch paths.
+ *
+ * This will iterate over all the JavaScript watch paths defined for themes and plugins,
+ * and return an iterator that can be used to iterate over all the JavaScript files in those paths.
+ *
+ * @return \AppendIterator A recursive iterator that iterates over the JavaScript watch paths.
+ */
 function get_recursive_js_watch_paths() {
 	$watch_paths = watch_paths();
 	$paths = [];
@@ -304,6 +327,15 @@ function get_recursive_js_watch_paths() {
 	return $main_iterator;
 }
 
+/**
+ * Get the recursive PHP watch paths.
+ *
+ * This function retrieves the watch paths for PHP files in both themes and active plugins.
+ * It creates a directory iterator for each watch path and appends them to a main iterator.
+ * The resulting main iterator contains all PHP files in the watch paths.
+ *
+ * @return \AppendIterator The main iterator containing the PHP watch paths.
+ */
 function get_recursive_php_watch_paths() {
 	$watch_paths = watch_paths();
 	$paths = [];
@@ -353,6 +385,7 @@ function get_recursive_php_watch_paths() {
  * @return array An associative array where each key is the real path of a CSS file and each value is a SHA1 hash of the file's content.
  */
 function get_css_file_hash_array() {
+	$hash = [];
 	foreach ( get_recursive_css_watch_paths() as $file ) {
 		if ( ! is_readable( $file->getRealPath() ) || ! $file->isFile() ) {
 			continue;
@@ -376,6 +409,7 @@ function get_css_file_hash_array() {
  * @return array An associative array where each key is the real path of a JS file and each value is a SHA1 hash of the file's content.
  */
 function get_js_file_hash_array() {
+	$hash = [];
 	foreach ( get_recursive_js_watch_paths() as $file ) {
 		if ( ! is_readable( $file->getRealPath() ) || ! $file->isFile() ) {
 			continue;
