@@ -55,7 +55,7 @@ function is_cornershop_user() {
 	if ( is_user_logged_in() && current_user_can( 'manage_options' ) ) {
 		$user = wp_get_current_user();
 		// Cornershop user?
-		if ( '@cshp.co' === substr( $user->user_email, -8 ) || '@cornershopcreative.com' === substr( $user->user_email, -23 ) ) {
+		if ( str_ends_with( $user->user_email, '@cshp.co' ) || str_ends_with( $user->user_email, '@cornershopcreative.com' ) || '@cshp.co' === substr( $user->user_email, -8 ) || '@cornershopcreative.com' === substr( $user->user_email, -23 ) ) {
 			return true;
 		}
 	}
@@ -63,6 +63,15 @@ function is_cornershop_user() {
 	return false;
 }
 
+
+/**
+ * Enqueue the Live Reload script.
+ *
+ * Check if the user is a CornerShop user and if so, registers and enqueues the Live Reload script.
+ *
+ * @return void
+ *
+ */
 function enqueue() {
 	if ( ! is_cornershop_user() ) {
 		return;
@@ -104,6 +113,11 @@ function add_asyncdefer_attribute( $tag, $handle ) {
 }
 add_filter( 'script_loader_tag', __NAMESPACE__ . '\add_asyncdefer_attribute', 10, 2 );
 
+/**
+ * Add a WordPress REST API endpoint for live reloading.
+ *
+ * @return void
+ */
 function add_rest_api_endpoint() {
 	if ( ! is_cornershop_server() ) {
 		return;
@@ -121,6 +135,11 @@ function add_rest_api_endpoint() {
 }
 add_action( 'rest_api_init', __NAMESPACE__ . '\add_rest_api_endpoint' );
 
+/**
+ * Get the theme paths to watch for CSS and JS file changes.
+ *
+ * @return array Array of file paths to watch for in the theme.
+ */
 function theme_paths() {
 	$theme_paths = [
 		'blocksy-child' => [
@@ -137,6 +156,11 @@ function theme_paths() {
 	return is_array( $theme_paths ) ? $theme_paths : [];
 }
 
+/**
+ * Get the theme paths to watch for CSS and JS file changes.
+ *
+ * @return array Array of file paths to watch for in the theme.
+ */
 function plugin_paths() {
 	$plugin_paths = [
 		'cshp-accordion' => [
@@ -520,6 +544,18 @@ function get_reload_file_hash() {
     return $reload_hash;
 }
 
+
+/**
+ * Live reload endpoint for continuously sending updates to the client every 1 second.
+ *
+ * This function sets the necessary headers for server-sent events (SSE) and enters
+ * an infinite loop to continuously send data to the client. The loop will exit if
+ * the client aborts the connection or if an error occurs.
+ *
+ * @param mixed $request The request object or data needed to generate the updates.
+ *
+ * @return void
+ */
 function live_reload_endpoint( $request ) {
 	header( "X-Accel-Buffering: no" );
 	header( "Content-Type: text/event-stream" );
@@ -556,6 +592,13 @@ function live_reload_endpoint( $request ) {
 	}
 }
 
+/**
+ * Format the Server Sent Event output format since the format of a Server Sent Event needs to match a particular format to work.
+ *
+ * @param string|array $output The data to output for the server ent event
+ *
+ * @return string The server sent event with the word "data: " in front of the output string.
+ */
 function format_sse_output( $output ) {
 	$data = $output;
 
@@ -684,6 +727,14 @@ function get_plugin_folders_path() {
 	return $plugin_directory;
 }
 
+
+/**
+ * Get the plugin name from the file path.
+ *
+ * @param string $file The file path.
+ *
+ * @return string The plugin name extracted from the file path.
+ */
 function get_plugin_name_from_file( $file ) {
 	$remove_plugins_path = str_replace_first( plugin_dir_path( __DIR__ ), '', $file );
 	$parts = explode( DIRECTORY_SEPARATOR, $remove_plugins_path );
@@ -701,11 +752,12 @@ function get_plugin_name_from_file( $file ) {
 function is_plugin_active( $file ) {
 	$plugin_name = get_plugin_name_from_file( $file );
 	$active_plugins = get_option( 'active_plugins' );
-    foreach ( $active_plugins as $active_plugin ) {
+
+	foreach ( $active_plugins as $active_plugin ) {
 		if ( 0 === strpos( $active_plugin, $plugin_name ) ) {
 			return true;
 		}
-    }
+	}
 	// use WP core's is_plugin_active function which needs the plugin folder name and the plugin file
 	if ( \is_plugin_active( $file ) ) {
 		return true;

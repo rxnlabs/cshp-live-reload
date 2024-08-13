@@ -91,3 +91,5 @@ add_filter( 'cshp_lr_plugin_paths', 'cshp_live_reload_plugin_support' );
 		* It stores the md5_hash of the theme file in the database and changes the hash in the database when a file is updated. This plugin does not store the changed files in the database and does not make any database calls (yet - this could change if we introduce some settings in the admin).
 		* It only works with the current theme files and does not work with plugins as well.
 		* It only works with changed PHP files and does not reload when JS and CSS files are changed.
+* Why does this plugin use sha1_hash instead of md5_hash or filemtime?
+  * During testing, sha1_hash was faster than md5_hash and much faster than comparing the modified file time.
