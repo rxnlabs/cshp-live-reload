@@ -11,16 +11,16 @@
 
 * __Efficient Replacement for Browsersync:__ It serves as an efficient replacement for Gulp's Browsersync live reload feature for frontend developments.
 
-Please note that this plugin only helps during **development** and is not intended for use on a live production site.
-
+* __Does not rely on a build tool such as Webpack, Vite, Rollup, etc...:__ This plugin is build tool agnostic and does not require you to use any build tools at all. Just simply change a file in the CSS or JS watch path or change a PHP file in a supported theme or plugin. It just works.
+* 
 * __Uses Server-Sent Events (SSEs):__  Instead of using AJAX-Polling that constantly makes an AJAX request to the server using a combination of `setInterval` and `setTimeout`, Server-Sent Events keep a persistent connection with the server. This has the advantage of not making multiple AJAX requests to the server and flooding the Network requests Developer Tools in your browser. Only one persistent connection will display. Read more about the technical differences in these links:
 	* [https://medium.com/geekculture/ajax-polling-vs-long-polling-vs-websockets-vs-server-sent-events-e0d65033c9ba](https://medium.com/geekculture/ajax-polling-vs-long-polling-vs-websockets-vs-server-sent-events-e0d65033c9ba)
 	* [https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events)
 	* [https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events)
 
-* __Does live rely on a build tool such as Webpack, Vite, Rollup, etc...:__ This plugin is build tool agnostic and does not require you to use any build tools at all. Just simply change a file in the CSS or JS watch path or change a PHP file in a supported theme or plugin. It just works.
-
 __NOTE__: This plugin requires the webserver to support TCP HTTTP/1.1 for long running server events. This has plugin has only been tested on NGINX servers.
+
+__NOTE__: Please note that this plugin only helps during **development** and is not intended for use on a live production site.
 
 ```bash
 # add this to the active nginx.conf file
